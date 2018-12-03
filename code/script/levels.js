@@ -1,7 +1,10 @@
-window.onload = function() {
-  document.getElementById("start-button").onclick = function() {
-    levels();
-  };
+$(document).ready(function(){
+    $("#planet").hover(function(){
+      levels();
+    });
+    $("#planet").click(function(){
+      document.location.href = '../html/game.html';
+    });
 
 function levels(){
   PlanetLevel.start();
@@ -37,5 +40,6 @@ function planet(x,y,width,height){
   };
 }
 
-}
+});
+
 
