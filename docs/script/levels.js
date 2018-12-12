@@ -21,6 +21,9 @@ var PlanetLevel = {
     this.ctx.fill();
     this.ctx.strokeStyle= '#0a4270'; 
     this.ctx.stroke();
+    this.ctx.fillStyle = '#0a4270';  
+    this.ctx.font = "14px Arial";
+    this.ctx.fillText("Level 1 - Brazil",50,72);
   }
 }
 
@@ -39,6 +42,8 @@ function planet(x,y,width,height){
     ctx.drawImage(this.img,this.x, this.y,this.width, this.height);
   };
 }
+
+
 
 });
 

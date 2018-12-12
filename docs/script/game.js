@@ -136,13 +136,13 @@ function updateGameArea() {
     } 
   }
   gameboard.clear();
-  gameboard.frames += 1;
+  gameboard.frames += .5;
   if (gameboard.frames % 100 === 0) {
     x = 10;
     y = 0;
     width = 50;
     height = 40;
-    minGap = 10;
+    minGap = 60;
     maxGap = 140;
     gap = Math.floor(Math.random()*(maxGap-minGap+1)+minGap);
     myRivals.push(new rival(width, height, x + gap, y));
@@ -154,6 +154,11 @@ function updateGameArea() {
     myRivals[i].y += 1;
     myRivals[i].height += 0.22;
     myRivals[i].width += 0.09;
+    if (myRivals[i].x < player.x){
+      myRivals[i].x += 1;
+    } else if (myRivals[i].x > player.x){
+      myRivals[i].x -= 1;
+    }
     myRivals[i].update();
   }
   player.newPos();
@@ -179,6 +184,7 @@ function moveLeft() {
 
 function moveRight() {
   player.speedX += 1;
+
 }
 
 document.onkeydown = function(e) {
