@@ -17,8 +17,37 @@
   <div  id="section1" class="d-flex  justify-content-center">
     <canvas id="planet"></canvas>
   </div>
-  <div  id="section2" class="d-flex justify-content-center">
-    <form><input  class="btn btn-warning btn-lg btn3d btn-tuto" type="button" value="TUTORIAL"/></form>
+  <div   class="d-flex justify-content-center">
+    <form><input  class="btn btn-warning btn-lg btn3d btn-tuto" type="button" value="TUTORIAL" data-toggle="modal" data-target="#ModalCarousel"/></form>
   </div>
+  <div  class="container text-center">
+    
+    <div class="modal fade" id="ModalCarousel" tabindex="-1" role="dialog" aria-labelledby="ModalCarouselLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div id="carousel-tutorial" class="carousel slide" data-ride="carousel">
+       <div class="carousel-inner"> 
+        <div class="carousel-item"> 
+          <img src="../images/game_begin.png" alt="game_begin"> 
+        </div> 
+        <div class="carousel-item"> 
+          <img src="../images/game_tutorial.png" alt="game_tutorial"> 
+       </div> 
+        <div class="carousel-item active"> 
+          <img src="../images/level.png" alt="levels"> 
+        </div> 
+      </div> 
+
+      <a class="carousel-control-prev section1a" href="#carousel-tutorial" data-slide="prev">
+        <span class="carousel-control-prev-icon"></span>
+      </a>
+      <a class="carousel-control-next section1a" href="#carousel-tutorial" data-slide="next">
+        <span class="carousel-control-next-icon"></span>
+      </a>
+    </div>
+        </div>
+      </div>
+    </div>
+    </div>
 </body>
 </html>

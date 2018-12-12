@@ -61,13 +61,16 @@ $(document).ready(function(){
       clearInterval(this.interval);
     },
     score : function(){
-      points = (Math.floor(this.frames/1.8))
+      points = (Math.floor(this.frames/1.8));
+      this.ctx.fillStyle = "#eff23c";
+      this.ctx.fillRect(0, 0, 400, 20);  
         this.ctx.fillStyle = "#d11d26";
         this.ctx.fillRect(0,0,points,20);
-        this.ctx.strokeStyle= '#f4dc42'; 
+        this.ctx.strokeStyle= '#FFFFFF';
+        this.ctx.lineWidth = 5; 
         this.ctx.rect(0, 0, 400, 20);
         this.ctx.stroke();
-        this.ctx.fillStyle = '#FFFFFF';  
+        this.ctx.fillStyle = '#FFFFFF';
         this.ctx.font = "22px Arial";
         this.ctx.fillText("Progress",10,45);
       if(points === 400){
@@ -81,6 +84,7 @@ function negroJose(x,y,width,height){
     this.height = height;
     this.x = x;
     this.y = y; 
+    this.bX = 0; 
     this.speedX = 0;
     this.speedY = 0;
     this.img = new Image();
@@ -92,7 +96,7 @@ function negroJose(x,y,width,height){
     }.bind(this);
     this.update = function(){
       ctx = gameboard.ctx;
-      ctx.drawImage(this.img2,this.x + 20, this.y + 20,30, 30);
+      ctx.drawImage(this.img2,this.x + 20, this.y + 20,30 - this.bX, 30 - this.bX);
       ctx.globalAlpha = 0.7;
       ctx.drawImage(this.img,0,20,70,85,this.x, this.y,this.width, this.height);
       ctx.globalAlpha = 1;
@@ -118,7 +122,8 @@ function rival(width, height, x, y) {
   this.width = width;
   this.height = height;
   this.x = x;
-  this.y = y; 
+  this.y = y;
+  this.sx = 0;
   this.speedX = 0;
   this.speedY = 0;
   this.img = new Image();
@@ -128,7 +133,7 @@ function rival(width, height, x, y) {
   }.bind(this);
   this.update = function(){
     ctx = gameboard.ctx;
-    ctx.drawImage(this.img,0,207,70,90,this.x, this.y,this.width, this.height);
+    ctx.drawImage(this.img,this.sx,207,70,90,this.x, this.y,this.width, this.height);
   };
   this.newPos = function() {
       this.x += this.speedX;
@@ -159,7 +164,7 @@ function updateGameArea() {
   if (gameboard.frames % 100 === 0) {
     x = 10;
     y = 0;
-    width = 50;
+    width = 40;
     height = 40;
     minGap = 60;
     maxGap = 140;
@@ -169,10 +174,23 @@ function updateGameArea() {
     myRivals.push(new rival(width, height, x + 500  +  gap * 2, y));
     myRivals.push(new rival(width, height, x + 750 +  gap * 3, y));
   }
+  if(gameboard.frames%2 == 0){
+    for(i = 0; i < myRivals.length; i += 1){
+      if(myRivals[i].sx < 210){
+        myRivals[i].sx += 70;
+      } else if (myRivals[i].sx === 210){
+        myRivals[i].sx = 0;
+      }
+    }
+  }
   for (i = 0; i < myRivals.length; i += 1) {
-    myRivals[i].y += 1;
-    myRivals[i].height += 0.22;
-    myRivals[i].width += 0.09;
+    myRivals[i].y += .8;
+    if(myRivals[i].height < 105){
+      myRivals[i].height += 0.22;;
+    }
+    if(myRivals[i].width < 70){
+      myRivals[i].width += 0.12;
+    }
     if (myRivals[i].x < player.x){
       myRivals[i].x += 1;
     } else if (myRivals[i].x > player.x){
@@ -186,15 +204,25 @@ function updateGameArea() {
 }
 
 function moveUp() {
-  player.speedY -= 1;
-  player.height -= 2.2;
-  player.width -= 1;
+  if(player.y > 10){
+    player.speedY -= 1;
+  }
+  if(player.height > 45){
+    player.height -= 2.2;
+  }
+  if(player.width > 45){
+    player.width -= 1;
+  }
 }
 
 function moveDown() {
   player.speedY += 1;
-  player.height += 2.2;
-  player.width += 1;
+  if(player.height < 105){
+    player.height += 2.2;
+  }
+  if(player.width < 70){
+    player.width += 1;
+  }
 }
 
 function moveLeft() {
@@ -203,7 +231,6 @@ function moveLeft() {
 
 function moveRight() {
   player.speedX += 1;
-
 }
 
 document.onkeydown = function(e) {
