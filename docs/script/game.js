@@ -59,6 +59,20 @@ $(document).ready(function(){
     },
     stop : function(){
       clearInterval(this.interval);
+    },
+    score : function(){
+      points = (Math.floor(this.frames/1.8))
+        this.ctx.fillStyle = "#d11d26";
+        this.ctx.fillRect(0,0,points,20);
+        this.ctx.strokeStyle= '#f4dc42'; 
+        this.ctx.rect(0, 0, 400, 20);
+        this.ctx.stroke();
+        this.ctx.fillStyle = '#FFFFFF';  
+        this.ctx.font = "22px Arial";
+        this.ctx.fillText("Progress",10,45);
+      if(points === 400){
+        this.stop();
+      }
     }
   }
 
@@ -70,13 +84,18 @@ function negroJose(x,y,width,height){
     this.speedX = 0;
     this.speedY = 0;
     this.img = new Image();
+    this.img2 = new Image();
     this.img.src = '../images/player.png'; 
+    this.img2.src = '../images/ball-game.png'; 
     this.img.onload = function(){
       this.update();
     }.bind(this);
     this.update = function(){
       ctx = gameboard.ctx;
+      ctx.drawImage(this.img2,this.x + 20, this.y + 20,30, 30);
+      ctx.globalAlpha = 0.7;
       ctx.drawImage(this.img,0,20,70,85,this.x, this.y,this.width, this.height);
+      ctx.globalAlpha = 1;
     };
     this.newPos = function() {
         this.x += this.speedX; 
@@ -163,7 +182,7 @@ function updateGameArea() {
   }
   player.newPos();
   player.update();
-  rival.update();
+  gameboard.score();
 }
 
 function moveUp() {
