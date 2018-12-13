@@ -2,6 +2,9 @@ $(document).ready(function(){
   $(document).ready(function(){
     game();
   });
+  $('#re-play').click(function() {
+    location.reload();
+  });
 
   var myRivals = [];
 
@@ -74,8 +77,11 @@ $(document).ready(function(){
         this.ctx.font = "22px Arial";
         this.ctx.fillText("Progress",10,45);
       if(points === 400){
-        this.stop();
+        this.goal();
       }
+    },
+    goal : function(){
+      goalPlayer = new goalkeeper(630, 5, 50, 65);
     }
   }
 
@@ -128,6 +134,40 @@ function rival(width, height, x, y) {
   this.speedY = 0;
   this.img = new Image();
   this.img.src = '../images/player-rival.png'; 
+  this.img.onload = function(){
+    this.update();
+  }.bind(this);
+  this.update = function(){
+    ctx = gameboard.ctx;
+    ctx.drawImage(this.img,this.sx,207,70,90,this.x, this.y,this.width, this.height);
+  };
+  this.newPos = function() {
+      this.x += this.speedX;
+      this.y += this.speedY; 
+  }
+  this.left   = function() { return this.x                 }
+  this.right  = function() { return (this.x + this.width)  }
+  this.top    = function() { return this.y                 }
+  this.bottom = function() { return this.y + (this.height) }
+
+  this.crashWith = function(rivalPlayer) {
+    return !((this.bottom() < rivalPlayer.top())    ||
+             (this.top()    > rivalPlayer.bottom()) ||
+             (this.right()  < rivalPlayer.left())   ||
+             (this.left()   > rivalPlayer.right())) 
+  }
+}
+
+function goalkeeper(x,y,width,height){
+  this.width = width;
+  this.height = height;
+  this.x = x;
+  this.y = y;
+  this.sx = 70;
+  this.speedX = 0;
+  this.speedY = 0;
+  this.img = new Image();
+  this.img.src = '../images/goalkeeper.png'; 
   this.img.onload = function(){
     this.update();
   }.bind(this);

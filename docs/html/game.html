@@ -15,8 +15,12 @@
   <title>Beat & score</title>
 </head>
 <body class="back-game">
-<div class="d-flex justify-content-center bleachers">
- <h1 class="display-2 tittle">BEAT & SCORE</h1>
+<div class="d-flex justify-content-center flex-column bleachers">
+ <h1 class="d-flex justify-content-center display-2 tittle">BEAT & SCORE</h1>
+ <div class="d-flex justify-content-right">
+    <form><input  id="levels" class="btn btn-primary btn-lg btn3d" type="button" value="LEVELS" onclick="window.location.href='../html/levels.html'" /></form>
+    <form><input  id="re-play" class="btn btn-success btn-lg btn3d" type="button" value="RE-PLAY"/></form>
+</div>
 </div>
 <div class="">
   <canvas id="field" class="game-field-stadium" width="1320" height="480"></canvas>
