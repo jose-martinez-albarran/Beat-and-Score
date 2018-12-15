@@ -26,6 +26,14 @@ $(document).ready(function(){
       this.ctx.fillRect(0,50,1320,40);
       this.ctx.fillStyle = "#234810";
       this.ctx.fillRect(0,90,1320,50);
+      this.ctx.fillStyle = "#FFFFFF";
+      this.ctx.fillRect(415,90,480,5);
+      this.ctx.fillRect(415,0,5,90);
+      this.ctx.fillRect(890,0,5,90);
+      this.ctx.beginPath();
+      this.ctx.arc(660, 130, 2.5, 0, 2 * Math.PI, false);
+      this.ctx.fill();
+      this.ctx.closePath();
       this.ctx.fillStyle = "#52a334";
       this.ctx.fillRect(0,140,1320,60);
       this.ctx.fillStyle = "#234810";
@@ -49,6 +57,10 @@ $(document).ready(function(){
       this.ctx.fillRect(0,50,1320,40);
       this.ctx.fillStyle = "#234810";
       this.ctx.fillRect(0,90,1320,50);
+      this.ctx.fillStyle = "#FFFFFF";
+      this.ctx.fillRect(415,90,480,5);
+      this.ctx.fillRect(415,0,5,90);
+      this.ctx.fillRect(890,0,5,90);
       this.ctx.fillStyle = "#52a334";
       this.ctx.fillRect(0,140,1320,60);
       this.ctx.fillStyle = "#234810";
@@ -62,13 +74,36 @@ $(document).ready(function(){
     },
     stop : function(){
       clearInterval(this.interval);
+      this.ctx = this.canvas.getContext("2d");
+      this.ctx.fillStyle = "#02488C";
+      this.ctx.fillRect(0,0,1320,480);
+      this.ctx.fillStyle = '#FFFFFF';  
+      this.ctx.font = "48px Fredoka One";
+      this.ctx.fillText("Better Luck Next Time!",50,72);
+      this.ctx.fillStyle = '#FFFFFF';  
+      this.ctx.font = "48px Fredoka One";
+      this.ctx.fillText("Do You Want To Play Again?",150,150);
+      this.ctx.fillStyle = '#FFFFFF';  
+      this.ctx.font = "48px Fredoka One";
+      this.ctx.fillText("Please Press Re-play Button",245,230);
+      this.img = new Image();
+      this.img.src = '../images/emoji.png'; 
+      this.img.onload = function(){
+        this.update();
+      }.bind(this);
+      this.update = function(){
+        ctx = gameboard.ctx;
+        ctx.drawImage(this.img,960, 160,300,300);
+      };
     },
     score : function(){
-      points = (Math.floor(this.frames/1.8));
+      this.points = (Math.floor(this.frames/1.8));
       this.ctx.fillStyle = "#eff23c";
       this.ctx.fillRect(0, 0, 400, 20);  
         this.ctx.fillStyle = "#d11d26";
-        this.ctx.fillRect(0,0,points,20);
+        if(this.points <= 400){
+          this.ctx.fillRect(0,0,this.points,20);
+        }
         this.ctx.strokeStyle= '#FFFFFF';
         this.ctx.lineWidth = 5; 
         this.ctx.rect(0, 0, 400, 20);
@@ -76,12 +111,12 @@ $(document).ready(function(){
         this.ctx.fillStyle = '#FFFFFF';
         this.ctx.font = "22px Arial";
         this.ctx.fillText("Progress",10,45);
-      if(points === 400){
+      if(this.points > 400){
         this.goal();
       }
     },
     goal : function(){
-      goalPlayer = new goalkeeper(630, 5, 50, 65);
+      this.goalPlayer = new goalkeeper(630, 5, 50, 65);
     }
   }
 
@@ -89,7 +124,8 @@ function negroJose(x,y,width,height){
     this.width = width;
     this.height = height;
     this.x = x;
-    this.y = y; 
+    this.y = y;
+    this.bY = this.y + 20; 
     this.bX = 0; 
     this.speedX = 0;
     this.speedY = 0;
@@ -102,19 +138,21 @@ function negroJose(x,y,width,height){
     }.bind(this);
     this.update = function(){
       ctx = gameboard.ctx;
-      ctx.drawImage(this.img2,this.x + 20, this.y + 20,30 - this.bX, 30 - this.bX);
+      ctx.drawImage(this.img2,this.x + 20, this.bY ,30 - this.bX, 30 - this.bX);
       ctx.globalAlpha = 0.7;
-      ctx.drawImage(this.img,0,20,70,85,this.x, this.y,this.width, this.height);
+      ctx.drawImage(this.img,0,20,70,85,this.x, this.y, this.width, this.height);
       ctx.globalAlpha = 1;
     };
-    this.newPos = function() {
-        this.x += this.speedX; 
-        this.y += this.speedY; 
+    this.newPos = function() { 
+        this.x += this.speedX;
+        this.y += this.speedY;
+        this.bY += this.speedY; 
     }
     this.left   = function() { return this.x + 10                }
     this.right  = function() { return (this.x + this.width) - 10 }
     this.top    = function() { return this.y  +  30          }
     this.bottom = function() { return this.y + (this.height) - 40}
+   
 
     this.crashWith = function(rivalPlayer) {
       return !((this.bottom() < rivalPlayer.top())    ||
@@ -209,10 +247,12 @@ function updateGameArea() {
     minGap = 60;
     maxGap = 140;
     gap = Math.floor(Math.random()*(maxGap-minGap+1)+minGap);
-    myRivals.push(new rival(width, height, x + gap, y));
-    myRivals.push(new rival(width, height, x + 250  + gap * 1, y));
-    myRivals.push(new rival(width, height, x + 500  +  gap * 2, y));
-    myRivals.push(new rival(width, height, x + 750 +  gap * 3, y));
+    if(gameboard.points < 400){
+      myRivals.push(new rival(width, height, x + gap, y));
+      myRivals.push(new rival(width, height, x + 250  + gap * 1, y));
+      myRivals.push(new rival(width, height, x + 500  +  gap * 2, y));
+      myRivals.push(new rival(width, height, x + 750 +  gap * 3, y));
+    }
   }
   if(gameboard.frames%2 == 0){
     for(i = 0; i < myRivals.length; i += 1){
@@ -243,19 +283,26 @@ function updateGameArea() {
   gameboard.score();
 }
 
+function goal() {
+  if(gameboard.frames%1 == 0){
+    player.bY -= 50;
+  }
+}
+
 function moveUp() {
   if(player.y > 10){
     player.speedY -= 1;
-  }
-  if(player.height > 45){
-    player.height -= 2.2;
-  }
-  if(player.width > 45){
-    player.width -= 1;
+    if(player.height > 45){
+      player.height -= 2.2;
+    }
+    if(player.width > 45){
+      player.width -= 1;
+    }
   }
 }
 
 function moveDown() {
+  if(player.y < 380){
   player.speedY += 1;
   if(player.height < 105){
     player.height += 2.2;
@@ -263,6 +310,7 @@ function moveDown() {
   if(player.width < 70){
     player.width += 1;
   }
+}
 }
 
 function moveLeft() {
@@ -275,6 +323,9 @@ function moveRight() {
 
 document.onkeydown = function(e) {
 switch (e.keyCode) {
+  case 32:
+    goal();
+    break;
   case 38:
     moveUp();
     break;

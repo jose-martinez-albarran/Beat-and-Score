@@ -44,7 +44,6 @@ function planet(x,y,width,height){
 }
 
 
-
 });
 
 
