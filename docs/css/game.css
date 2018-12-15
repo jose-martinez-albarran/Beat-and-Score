@@ -30,6 +30,9 @@ btn3d {
 
 .btn3d:active:focus,
 .btn3d:focus:hover,
+html{
+	width: 80%;
+}
 .btn3d:focus {
 	-moz-outline-style: none;
 	outline: medium none;

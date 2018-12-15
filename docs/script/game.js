@@ -253,6 +253,9 @@ function updateGameArea() {
       myRivals.push(new rival(width, height, x + 500  +  gap * 2, y));
       myRivals.push(new rival(width, height, x + 750 +  gap * 3, y));
     }
+    if(gameboard.points > 400){
+      goalPlayer.update();
+    }
   }
   if(gameboard.frames%2 == 0){
     for(i = 0; i < myRivals.length; i += 1){
